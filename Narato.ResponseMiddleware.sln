@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BDFB9B27-E3EE-40C6-9897-56FCBD81AFE5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{85A899C5-F021-4502-9DA8-5C4AF6CE35CB}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Narato.ResponseMiddleware", "src\Narato.ResponseMiddleware\Narato.ResponseMiddleware.xproj", "{6F5B9E55-FAC5-448F-A2B9-B58EF516212D}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Narato.ResponseMiddleware.Test", "test\Narato.ResponseMiddleware.Test\Narato.ResponseMiddleware.Test.xproj", "{F38CAF26-E6D7-411D-9D51-5CEFF645DC86}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6F5B9E55-FAC5-448F-A2B9-B58EF516212D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F5B9E55-FAC5-448F-A2B9-B58EF516212D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F5B9E55-FAC5-448F-A2B9-B58EF516212D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F5B9E55-FAC5-448F-A2B9-B58EF516212D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F38CAF26-E6D7-411D-9D51-5CEFF645DC86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F38CAF26-E6D7-411D-9D51-5CEFF645DC86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F38CAF26-E6D7-411D-9D51-5CEFF645DC86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F38CAF26-E6D7-411D-9D51-5CEFF645DC86}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6F5B9E55-FAC5-448F-A2B9-B58EF516212D} = {BDFB9B27-E3EE-40C6-9897-56FCBD81AFE5}
+		{F38CAF26-E6D7-411D-9D51-5CEFF645DC86} = {85A899C5-F021-4502-9DA8-5C4AF6CE35CB}
+	EndGlobalSection
+EndGlobal
