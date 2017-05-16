@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Narato.ResponseMiddleware.Correlations.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Narato.ResponseMiddleware.Correlations
 {
@@ -19,6 +16,10 @@ namespace Narato.ResponseMiddleware.Correlations
 
         public Guid GetCorrelationId()
         {
+            if (_httpContextAccessor.HttpContext == null || _httpContextAccessor.HttpContext.Request == null)
+            {
+                throw new Exception("Correlation Id was asked when not in a request context");
+            }
             Guid guid;
             if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey(CORRELATION_ID_HEADER_NAME))
             {

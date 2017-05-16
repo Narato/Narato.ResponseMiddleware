@@ -8,11 +8,19 @@ using Narato.ResponseMiddleware.Models.Exceptions.Interfaces;
 using Narato.ResponseMiddleware.Models.Models;
 using Narato.ResponseMiddleware.Models.Exceptions;
 using Narato.ResponseMiddleware.Models.ActionResults;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Narato.ResponseMiddleware.Mappers
 {
     public class ExceptionToActionResultMapper : IExceptionToActionResultMapper
     {
+        private readonly IHostingEnvironment _hostingEnvironment;
+
+        public ExceptionToActionResultMapper(IHostingEnvironment hostingEnvironment)
+        {
+            _hostingEnvironment = hostingEnvironment;
+        }
+
         public IActionResult Map(Exception ex)
         {
             if (ex is IValidationException<object>)
@@ -61,7 +69,7 @@ namespace Narato.ResponseMiddleware.Mappers
 
             var message = "Something went wrong. Contact support and give them the identifier found below.";
             // if development ==> expose exception message
-            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != null && Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT").ToLower().Equals("development"))
+            if (_hostingEnvironment.IsDevelopment()/*Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != null && Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT").ToLower().Equals("development")*/)
             {
                 message = ex.Message;
             }
