@@ -1,8 +1,5 @@
 ﻿using Narato.ResponseMiddleware.Mappers.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Narato.ResponseMiddleware.Models.Exceptions.Interfaces;
 using Narato.ResponseMiddleware.Models.Models;

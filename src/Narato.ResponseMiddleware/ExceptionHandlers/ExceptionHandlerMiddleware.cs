@@ -1,12 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using Microsoft.Net.Http.Headers;
-using Narato.ResponseMiddleware.Mappers.Interfaces;
-using Microsoft.AspNetCore.Mvc.Internal;
-
-namespace Narato.ResponseMiddleware.ExceptionHandlers
+﻿namespace Narato.ResponseMiddleware.ExceptionHandlers
 {
     // TODO: middleware doesn't seem to work because IActionResult can't execute on a HttpContext
     //public class ExceptionHandlerMiddleware

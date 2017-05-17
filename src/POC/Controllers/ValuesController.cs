@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using POC.Shizzle;
+using Narato.ResponseMiddleware.Models.Models;
 
 namespace POC.Controllers
 {
@@ -20,15 +19,17 @@ namespace POC.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            throw new Exception("fdog");
+            throw new Exception();
             //return new string[] { "value1", _meep.GetPath() };
         }
 
         // GET api/values/5
         [HttpGet("{id}", Name = "getbyid")]
-        public string Get(int id)
+        public Paged<string> Get(string id)
         {
-            return "value";
+            var items = new string[] { "meep1", "meep2" };
+            var page = new Paged<string>(items, 1, 2, 5);
+            return page;
         }
 
         // POST api/values

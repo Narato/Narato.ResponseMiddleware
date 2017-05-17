@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Narato.ResponseMiddleware.Models.Legacy.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Narato.ResponseMiddleware.Models.Models.Interfaces;
 
 namespace Narato.ResponseMiddleware.ResponseFilters
 {
@@ -13,7 +10,7 @@ namespace Narato.ResponseMiddleware.ResponseFilters
 
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            var bla = 5;
+            // do nothing
         }
 
         public void OnActionExecuted(ActionExecutedContext context)
@@ -21,13 +18,36 @@ namespace Narato.ResponseMiddleware.ResponseFilters
             // let exceptionhandlerfilter handle this
             if (context.Exception != null)
                 return;
+            if (context.Result == null)
+                return;
 
-            if (context.Result != null && context.Result is ObjectResult)
+            if (context.Result is ObjectResult)
             {
                 var objectResult = context.Result as ObjectResult;
-                objectResult.Value = new Response<object>(objectResult.Value, context.HttpContext.Request.Path, objectResult.StatusCode ?? 200);
-                //var response = new Response<object>(objectResult.Value, context.HttpContext.Request.Path, objectResult.StatusCode ?? 200);
-                //context.Result = new ObjectResult(response) { StatusCode = objectResult.StatusCode };
+                if (objectResult.Value is IPaged<object>)
+                {
+                    var pagedValue = objectResult.Value as IPaged<object>;
+
+                    var response = new Response<object>(pagedValue.Items, context.HttpContext.Request.Path, objectResult.StatusCode ?? 200);
+                    response.Skip = pagedValue.Skip;
+                    response.Take = pagedValue.Take;
+                    response.Total = pagedValue.Total;
+                    objectResult.Value = response;
+                } else
+                {
+                    objectResult.Value = new Response<object>(objectResult.Value, context.HttpContext.Request.Path, objectResult.StatusCode ?? 200);
+                }
+            } else if (context.Result is StatusCodeResult)
+            {
+                // we have to convert this to an ObjectResult
+                var statusCodeResult = context.Result as StatusCodeResult;
+
+                var objectResult = new ObjectResult(new Response
+                {
+                    Status = statusCodeResult.StatusCode,
+                    Self = context.HttpContext.Request.Path
+                });
+                context.Result = objectResult;
             }
         }
     }

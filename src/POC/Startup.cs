@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +13,7 @@ using Narato.ResponseMiddleware.Correlations;
 using Narato.ResponseMiddleware.Correlations.Interfaces;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Narato.ResponseMiddleware.ResponseFilters;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace POC
 {
@@ -45,11 +42,11 @@ namespace POC
             config =>
             {
                 config.Filters.Add(typeof(ExceptionHandlerFilter));
-                //config.Filters.Add(typeof(LegacyResponseFilter));
+                config.Filters.Add(typeof(LegacyResponseFilter));
             });
 
             services.AddSingleton<IMeep, Meep>();
-            services.AddTransient<IExceptionToActionResultMapper, ExceptionToActionResultMapper>();
+            services.AddTransient<IExceptionToActionResultMapper, LegacyExceptionToActionResultMapper>();
             services.AddTransient<ICorrelationIdProvider, CorrelationIdProvider>();
         }
 
@@ -59,7 +56,7 @@ namespace POC
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            //app.UseMiddleware<ExceptionHandlerMiddleware>();
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
             app.UseMvc();
         }
     }
