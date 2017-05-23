@@ -1,6 +1,13 @@
 # Narato.ObjectExtensions
 This library contains some utils extensions placed on Object. A QOL library
 
+# Helping out
+
+IMPORTANT NOTE
+===
+By default, the CLI tools will try to use the highest version of dotnet core to build the project.
+If you have dotnet core >1.1.0 installed, this is a problem. You have to specify [which sdk version to use](https://docs.microsoft.com/en-us/dotnet/articles/core/tools/global-json) in the global.json file. This file however, cannot be updated in this repo, as it will break the build (most likely, the exact SDK you use, will not be installed on the build agent).
+To solve this issue, please run following command after cloning the repo: `git update-index --skip-worktree global.json`
 
 GIT
 ===
