@@ -4,11 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using Narato.ResponseMiddleware.Models.Exceptions;
 using Narato.ResponseMiddleware.Models.Legacy.Extensions;
 using Microsoft.AspNetCore.Http;
-using Narato.ResponseMiddleware.Correlations.Interfaces;
+using Narato.Correlations.Correlations.Interfaces;
 using Narato.ResponseMiddleware.Models.Legacy.Models;
 using Narato.ResponseMiddleware.Models.Exceptions.Interfaces;
 using System.Linq;
 using Narato.ResponseMiddleware.Models.Legacy.ActionResults;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Narato.ResponseMiddleware.Mappers
 {
@@ -16,11 +17,13 @@ namespace Narato.ResponseMiddleware.Mappers
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ICorrelationIdProvider _correlationIdProvider;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
-        public LegacyExceptionToActionResultMapper(IHttpContextAccessor httpContextAccessor, ICorrelationIdProvider correlationIdProvider)
+        public LegacyExceptionToActionResultMapper(IHttpContextAccessor httpContextAccessor, ICorrelationIdProvider correlationIdProvider, IHostingEnvironment hostingEnvironment)
         {
             _httpContextAccessor = httpContextAccessor;
             _correlationIdProvider = correlationIdProvider;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public IActionResult Map(Exception ex)
@@ -71,7 +74,7 @@ namespace Narato.ResponseMiddleware.Mappers
 
             var message = "Something went wrong. Contact support and give them the identifier found below.";
             // if development ==> expose exception message
-            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != null && Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT").ToLower().Equals("development"))
+            if (_hostingEnvironment.IsDevelopment()/*Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != null && Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT").ToLower().Equals("development")*/)
             {
                 message = ex.Message;
             }

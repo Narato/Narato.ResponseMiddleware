@@ -6,8 +6,8 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>f38caf26-e6d7-411d-9d51-5ceff645dc86</ProjectGuid>
-    <RootNamespace>Narato.ResponseMiddleware.Test</RootNamespace>
+    <ProjectGuid>9d307bbf-c367-4003-a8df-c093b8734e94</ProjectGuid>
+    <RootNamespace>Narato.ResponseMiddleware.IntegrationTest</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
