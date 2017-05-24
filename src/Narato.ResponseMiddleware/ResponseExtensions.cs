@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Narato.Correlations;
 using Narato.ResponseMiddleware.ExceptionHandlers;
 using Narato.ResponseMiddleware.Mappers;
 using Narato.ResponseMiddleware.Mappers.Interfaces;
 using Narato.ResponseMiddleware.ResponseFilters;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Narato.ResponseMiddleware
 {
@@ -21,9 +19,13 @@ namespace Narato.ResponseMiddleware
             }
 
             if (legacy)
+            {
+                services.AddCorrelations();
                 services.AddTransient<IExceptionToActionResultMapper, LegacyExceptionToActionResultMapper>();
-            else
+            } else
+            {
                 services.AddTransient<IExceptionToActionResultMapper, ExceptionToActionResultMapper>();
+            }
 
             return services;
         }
@@ -33,8 +35,8 @@ namespace Narato.ResponseMiddleware
             config.Filters.Add(typeof(ExceptionHandlerFilter));
             if (legacy)
             {
-                config.Filters.Add(typeof(LegacyResponseFilter));
                 config.Filters.Add(typeof(LegacyExecutionTimingFilter));
+                config.Filters.Add(typeof(LegacyResponseFilter));
             }
         }
     }

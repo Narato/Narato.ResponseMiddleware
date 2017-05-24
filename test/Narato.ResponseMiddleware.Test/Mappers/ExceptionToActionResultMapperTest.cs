@@ -5,10 +5,7 @@ using Narato.ResponseMiddleware.Mappers;
 using Narato.ResponseMiddleware.Models.ActionResults;
 using Narato.ResponseMiddleware.Models.Exceptions;
 using Narato.ResponseMiddleware.Models.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Narato.ResponseMiddleware.Test.Mappers

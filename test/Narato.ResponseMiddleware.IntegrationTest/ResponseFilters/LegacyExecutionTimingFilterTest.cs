@@ -2,14 +2,13 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
-using Narato.ResponseMiddleware.Models.Models;
+using Narato.ResponseMiddleware.Models.Legacy.Models;
 using Narato.StringExtensions;
-using System.Net;
 using Xunit;
 
-namespace Narato.ResponseMiddleware.IntegrationTest.ExceptionHandlers
+namespace Narato.ResponseMiddleware.IntegrationTest.ResponseFilters
 {
-    public class ExceptionHandlerFilterTest
+    public class LegacyExecutionTimingFilterTest
     {
         private TestServer SetupServer()
         {
@@ -26,17 +25,17 @@ namespace Narato.ResponseMiddleware.IntegrationTest.ExceptionHandlers
                         //Add this filter globally so every request runs this filter to recored execution time
                         config =>
                         {
-                            config.AddResponseFilters();
+                            config.AddResponseFilters(true);
                         });
 
-                    services.AddResponseMiddleware();
+                    services.AddResponseMiddleware(true);
                 });
 
             return new TestServer(builder);
         }
 
         [Fact]
-        public async void TestExceptionHandlerDoesNothingWhenNoExceptionThrown()
+        public async void TestTimingGetsSet()
         {
             // Arrange
             var server = SetupServer();
@@ -46,25 +45,11 @@ namespace Narato.ResponseMiddleware.IntegrationTest.ExceptionHandlers
             var response = await server.CreateClient().GetAsync("exceptionHandler/noException");
             var message = await response.Content.ReadAsStringAsync();
 
-            // Assert
-            Assert.Equal("meep", message);
-        }
-
-        [Fact]
-        public async void TestExceptionHandlerHandlesException()
-        {
-            // Arrange
-            var server = SetupServer();
-
-            // Act
-
-            var response = await server.CreateClient().GetAsync("exceptionHandler/exception");
-            var message = await response.Content.ReadAsStringAsync();
-            var errorContent = message.FromJson<ErrorContent>();
+            var responseObject = message.FromJson<Response<string>>();
 
             // Assert
-            Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
-            Assert.Equal("nope", errorContent.Message);
+            Assert.True(responseObject.Generation.Duration > 0);
+            Assert.True(responseObject.Generation.TimeStamp.Year > 1000);
         }
     }
 }

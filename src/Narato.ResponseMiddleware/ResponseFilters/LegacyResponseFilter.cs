@@ -7,7 +7,6 @@ namespace Narato.ResponseMiddleware.ResponseFilters
 {
     public class LegacyResponseFilter : IActionFilter
     {
-
         public void OnActionExecuting(ActionExecutingContext context)
         {
             // do nothing
@@ -24,6 +23,7 @@ namespace Narato.ResponseMiddleware.ResponseFilters
             if (context.Result is ObjectResult)
             {
                 var objectResult = context.Result as ObjectResult;
+                
                 if (objectResult.Value is IPaged<object>)
                 {
                     var pagedValue = objectResult.Value as IPaged<object>;
@@ -36,6 +36,7 @@ namespace Narato.ResponseMiddleware.ResponseFilters
                 } else
                 {
                     objectResult.Value = new Response<object>(objectResult.Value, context.HttpContext.Request.Path, objectResult.StatusCode ?? 200);
+                    objectResult.DeclaredType = objectResult.Value.GetType(); // needed in case the controller endpoint returns a string, we'd use the StringOutputFormatter, which crashes if it tries to write a response object
                 }
             } else if (context.Result is StatusCodeResult)
             {

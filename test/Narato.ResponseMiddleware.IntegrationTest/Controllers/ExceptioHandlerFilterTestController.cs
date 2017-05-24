@@ -9,6 +9,7 @@ namespace Narato.ResponseMiddleware.IntegrationTest.Controllers
         [HttpGet("noException")]
         public string TestNoException()
         {
+            System.Threading.Thread.Sleep(10);
             return "meep";
         }
 

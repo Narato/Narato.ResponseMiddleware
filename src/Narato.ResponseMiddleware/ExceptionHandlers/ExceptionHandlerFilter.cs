@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using Narato.ResponseMiddleware.Mappers.Interfaces;
-using System.Threading.Tasks;
 
 namespace Narato.ResponseMiddleware.ExceptionHandlers
 {
