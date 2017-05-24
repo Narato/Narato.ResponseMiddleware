@@ -12,7 +12,6 @@
     },
     "Microsoft.AspNetCore.Mvc": "1.0.0",
     "NETStandard.Library": "1.6.0",
-    "Newtonsoft.Json": "9.0.1",
     "Narato.ResponseMiddleware.Models": "1.0.0",
     "Narato.ResponseMiddleware.Models.Legacy": "1.0.0",
     "Narato.Correlations": "1.0.0"
