@@ -17,10 +17,10 @@ namespace Narato.ResponseMiddleware.ExceptionHandlers
 
         public override void OnException(ExceptionContext context)
         {
+            _logger.LogError(0, context.Exception, "An exception has occurred, and will be mapped to a fitting IActionResult: " + context.Exception.Message);
             var actionResult = _exceptionToActionResultMapper.Map(context.Exception);
             context.ExceptionHandled = true;
             context.Result = actionResult;
-            //return actionResult.ExecuteResultAsync(context);
         }
     }
 }

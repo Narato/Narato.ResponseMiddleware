@@ -6,16 +6,19 @@ using Narato.ResponseMiddleware.Models.Models;
 using Narato.ResponseMiddleware.Models.Exceptions;
 using Narato.ResponseMiddleware.Models.ActionResults;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Narato.ResponseMiddleware.Mappers
 {
     public class ExceptionToActionResultMapper : IExceptionToActionResultMapper
     {
         private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly ILogger _logger;
 
-        public ExceptionToActionResultMapper(IHostingEnvironment hostingEnvironment)
+        public ExceptionToActionResultMapper(IHostingEnvironment hostingEnvironment, ILogger<ExceptionToActionResultMapper> logger)
         {
             _hostingEnvironment = hostingEnvironment;
+            _logger = logger;
         }
 
         public IActionResult Map(Exception ex)
@@ -64,9 +67,10 @@ namespace Narato.ResponseMiddleware.Mappers
                 return new InternalServerObjectResult(errorContent);
             }
 
+            _logger.LogTrace($"Exception of type {ex.GetType().Name} was mapped by the catch all mapper.");
             var message = "Something went wrong. Contact support and give them the identifier found below.";
             // if development ==> expose exception message
-            if (_hostingEnvironment.IsDevelopment()/*Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != null && Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT").ToLower().Equals("development")*/)
+            if (_hostingEnvironment.IsDevelopment())
             {
                 message = ex.Message;
             }

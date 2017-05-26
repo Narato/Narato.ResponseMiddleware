@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Narato.ResponseMiddleware.Mappers;
 using Narato.ResponseMiddleware.Models.ActionResults;
@@ -17,7 +18,8 @@ namespace Narato.ResponseMiddleware.Test.Mappers
         {
             // Arrange
             var hostingEnvironmentMock = new Mock<IHostingEnvironment>();
-            var mapper = new ExceptionToActionResultMapper(hostingEnvironmentMock.Object);
+            var loggerMock = new Mock<ILogger<ExceptionToActionResultMapper>>();
+            var mapper = new ExceptionToActionResultMapper(hostingEnvironmentMock.Object, loggerMock.Object);
 
             var validationDictionary = new ModelValidationDictionary<string>();
             validationDictionary.Add("name", "cannot contain numbers.");
@@ -38,7 +40,8 @@ namespace Narato.ResponseMiddleware.Test.Mappers
         {
             // Arrange
             var hostingEnvironmentMock = new Mock<IHostingEnvironment>();
-            var mapper = new ExceptionToActionResultMapper(hostingEnvironmentMock.Object);
+            var loggerMock = new Mock<ILogger<ExceptionToActionResultMapper>>();
+            var mapper = new ExceptionToActionResultMapper(hostingEnvironmentMock.Object, loggerMock.Object);
 
             var ex = new EntityNotFoundException();
 
@@ -54,7 +57,8 @@ namespace Narato.ResponseMiddleware.Test.Mappers
         {
             // Arrange
             var hostingEnvironmentMock = new Mock<IHostingEnvironment>();
-            var mapper = new ExceptionToActionResultMapper(hostingEnvironmentMock.Object);
+            var loggerMock = new Mock<ILogger<ExceptionToActionResultMapper>>();
+            var mapper = new ExceptionToActionResultMapper(hostingEnvironmentMock.Object, loggerMock.Object);
 
             var ex = new EntityNotFoundException("meep", "moop");
 
@@ -73,7 +77,8 @@ namespace Narato.ResponseMiddleware.Test.Mappers
         {
             // Arrange
             var hostingEnvironmentMock = new Mock<IHostingEnvironment>();
-            var mapper = new ExceptionToActionResultMapper(hostingEnvironmentMock.Object);
+            var loggerMock = new Mock<ILogger<ExceptionToActionResultMapper>>();
+            var mapper = new ExceptionToActionResultMapper(hostingEnvironmentMock.Object, loggerMock.Object);
 
             var ex = new UnauthorizedException();
 
@@ -89,7 +94,8 @@ namespace Narato.ResponseMiddleware.Test.Mappers
         {
             // Arrange
             var hostingEnvironmentMock = new Mock<IHostingEnvironment>();
-            var mapper = new ExceptionToActionResultMapper(hostingEnvironmentMock.Object);
+            var loggerMock = new Mock<ILogger<ExceptionToActionResultMapper>>();
+            var mapper = new ExceptionToActionResultMapper(hostingEnvironmentMock.Object, loggerMock.Object);
 
             var ex = new ForbiddenException();
 
@@ -105,7 +111,8 @@ namespace Narato.ResponseMiddleware.Test.Mappers
         {
             // Arrange
             var hostingEnvironmentMock = new Mock<IHostingEnvironment>();
-            var mapper = new ExceptionToActionResultMapper(hostingEnvironmentMock.Object);
+            var loggerMock = new Mock<ILogger<ExceptionToActionResultMapper>>();
+            var mapper = new ExceptionToActionResultMapper(hostingEnvironmentMock.Object, loggerMock.Object);
 
             var ex = new ExceptionWithFeedback("meep", "moop");
 

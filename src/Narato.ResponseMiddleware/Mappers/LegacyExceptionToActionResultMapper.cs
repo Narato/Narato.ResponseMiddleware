@@ -10,6 +10,7 @@ using Narato.ResponseMiddleware.Models.Exceptions.Interfaces;
 using System.Linq;
 using Narato.ResponseMiddleware.Models.Legacy.ActionResults;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Narato.ResponseMiddleware.Mappers
 {
@@ -18,12 +19,14 @@ namespace Narato.ResponseMiddleware.Mappers
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ICorrelationIdProvider _correlationIdProvider;
         private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly ILogger _logger;
 
-        public LegacyExceptionToActionResultMapper(IHttpContextAccessor httpContextAccessor, ICorrelationIdProvider correlationIdProvider, IHostingEnvironment hostingEnvironment)
+        public LegacyExceptionToActionResultMapper(IHttpContextAccessor httpContextAccessor, ICorrelationIdProvider correlationIdProvider, IHostingEnvironment hostingEnvironment, ILogger<LegacyExceptionToActionResultMapper> logger)
         {
             _httpContextAccessor = httpContextAccessor;
             _correlationIdProvider = correlationIdProvider;
             _hostingEnvironment = hostingEnvironment;
+            _logger = logger;
         }
 
         public IActionResult Map(Exception ex)
@@ -34,7 +37,7 @@ namespace Narato.ResponseMiddleware.Mappers
             {
                 var typedEx = ex as IValidationException<object>;
                 var response = new ErrorResponse(typedEx.ValidationMessages.ToFeedbackItems().ToList(), absolutePath, 400);
-                response.Identifier = _correlationIdProvider.GetCorrelationId();//typedEx.GetTrackingGuid();
+                response.Identifier = _correlationIdProvider.GetCorrelationId();
                 response.Title = "Validation failed.";
                 return new BadRequestObjectResult(response);
             }
@@ -48,7 +51,7 @@ namespace Narato.ResponseMiddleware.Mappers
                 }
 
                 var response = new ErrorResponse(new FeedbackItem { Description = typedEx.Message, Type = FeedbackType.Error }, absolutePath, 404);
-                response.Identifier = _correlationIdProvider.GetCorrelationId();//typedEx.GetTrackingGuid();
+                response.Identifier = _correlationIdProvider.GetCorrelationId();
                 response.Title = "Entity could not be found.";
                 return new NotFoundObjectResult(response);
             }
@@ -67,20 +70,21 @@ namespace Narato.ResponseMiddleware.Mappers
             {
                 var typedEx = ex as ExceptionWithFeedback;
                 var response = new ErrorResponse(typedEx.Message.ToFeedbackItem(FeedbackType.Error), absolutePath, 500);
-                response.Identifier = _correlationIdProvider.GetCorrelationId(); // typedEx.GetTrackingGuid();
+                response.Identifier = _correlationIdProvider.GetCorrelationId();
                 response.Title = "Unexpected internal server error.";
                 return new InternalServerErrorWithResponse(response);
             }
 
+            _logger.LogTrace($"Exception of type {ex.GetType().Name} was mapped by the catch all mapper.");
             var message = "Something went wrong. Contact support and give them the identifier found below.";
             // if development ==> expose exception message
-            if (_hostingEnvironment.IsDevelopment()/*Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != null && Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT").ToLower().Equals("development")*/)
+            if (_hostingEnvironment.IsDevelopment())
             {
                 message = ex.Message;
             }
             // catch all (just Exception)
             var catchAllResponse = new ErrorResponse(message.ToFeedbackItem(FeedbackType.Error), absolutePath, 500);
-            catchAllResponse.Identifier = _correlationIdProvider.GetCorrelationId(); // ex.GetTrackingGuid();
+            catchAllResponse.Identifier = _correlationIdProvider.GetCorrelationId();
             catchAllResponse.Title = "Unexpected internal server error.";
             return new InternalServerErrorWithResponse(catchAllResponse);
         }
