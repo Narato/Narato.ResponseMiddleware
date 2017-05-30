@@ -48,6 +48,7 @@ namespace Narato.ResponseMiddleware.ResponseFilters
                     Status = statusCodeResult.StatusCode,
                     Self = context.HttpContext.Request.Path
                 });
+                objectResult.StatusCode = statusCodeResult.StatusCode;
                 context.Result = objectResult;
             }
         }
