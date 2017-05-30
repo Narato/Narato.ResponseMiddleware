@@ -35,8 +35,12 @@ namespace Narato.ResponseMiddleware
             config.Filters.Add(typeof(ExceptionHandlerFilter));
             if (legacy)
             {
+                config.Filters.Add(typeof(LegacyModelValidationFilter));
                 config.Filters.Add(typeof(LegacyExecutionTimingFilter));
                 config.Filters.Add(typeof(LegacyResponseFilter));
+            } else
+            {
+                config.Filters.Add(typeof(ModelValidationFilter));
             }
         }
     }
