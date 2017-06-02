@@ -8,9 +8,9 @@ using Narato.Correlations.Correlations.Interfaces;
 using Narato.ResponseMiddleware.Models.Legacy.Models;
 using Narato.ResponseMiddleware.Models.Exceptions.Interfaces;
 using System.Linq;
-using Narato.ResponseMiddleware.Models.Legacy.ActionResults;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
+using Narato.ResponseMiddleware.Models.ActionResults;
 
 namespace Narato.ResponseMiddleware.Mappers
 {
@@ -72,7 +72,7 @@ namespace Narato.ResponseMiddleware.Mappers
                 var response = new ErrorResponse(typedEx.Message.ToFeedbackItem(FeedbackType.Error), absolutePath, 500);
                 response.Identifier = _correlationIdProvider.GetCorrelationId();
                 response.Title = "Unexpected internal server error.";
-                return new InternalServerErrorWithResponse(response);
+                return new InternalServerObjectResult(response);
             }
 
             _logger.LogTrace($"Exception of type {ex.GetType().Name} was mapped by the catch all mapper.");
@@ -86,7 +86,7 @@ namespace Narato.ResponseMiddleware.Mappers
             var catchAllResponse = new ErrorResponse(message.ToFeedbackItem(FeedbackType.Error), absolutePath, 500);
             catchAllResponse.Identifier = _correlationIdProvider.GetCorrelationId();
             catchAllResponse.Title = "Unexpected internal server error.";
-            return new InternalServerErrorWithResponse(catchAllResponse);
+            return new InternalServerObjectResult(catchAllResponse);
         }
     }
 }

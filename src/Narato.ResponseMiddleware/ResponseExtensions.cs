@@ -32,16 +32,16 @@ namespace Narato.ResponseMiddleware
 
         public static void AddResponseFilters(this MvcOptions config, bool legacy = false)
         {
-            config.Filters.Add(typeof(ExceptionHandlerFilter));
             if (legacy)
             {
-                config.Filters.Add(typeof(LegacyModelValidationFilter));
                 config.Filters.Add(typeof(LegacyExecutionTimingFilter));
                 config.Filters.Add(typeof(LegacyResponseFilter));
+                config.Filters.Add(typeof(LegacyModelValidationFilter));
             } else
             {
                 config.Filters.Add(typeof(ModelValidationFilter));
             }
+            config.Filters.Add(typeof(ExceptionHandlerFilter));
         }
     }
 }
