@@ -29,13 +29,15 @@ namespace Narato.ResponseMiddleware.Mappers
             _logger = logger;
         }
 
-        public IActionResult Map(Exception ex)
+        // Override this method if you use anything other than IValidationException<string>
+        // first check if it is your IValidationException, and then call base.Map(ex)
+        public virtual IActionResult Map(Exception ex)
         {
             var absolutePath = _httpContextAccessor.HttpContext.Request.Path;
 
-            if (ex is IValidationException<object>)
+            if (ex is IValidationException<string>)
             {
-                var typedEx = ex as IValidationException<object>;
+                var typedEx = ex as IValidationException<string>;
                 var response = new ErrorResponse(typedEx.ValidationMessages.ToFeedbackItems().ToList(), absolutePath, 400);
                 response.Identifier = _correlationIdProvider.GetCorrelationId();
                 response.Title = "Validation failed.";
