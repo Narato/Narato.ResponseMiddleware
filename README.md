@@ -22,7 +22,7 @@ Getting started
 ```
 or if using the new csproj files: 
 ```xml
-<PackageReference Include="Narato.ResponseMiddleware.Models" Version="1.0.0" />
+<PackageReference Include="Narato.ResponseMiddleware.Models" Version="1.0.8" />
 ```
 
 ### 2. Configure Startup.cs
