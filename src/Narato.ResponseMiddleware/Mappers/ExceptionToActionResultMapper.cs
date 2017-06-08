@@ -21,7 +21,7 @@ namespace Narato.ResponseMiddleware.Mappers
             _logger = logger;
         }
 
-        public IActionResult Map(Exception ex)
+        public virtual IActionResult Map(Exception ex)
         {
             if (ex is IValidationException<object>)
             {
