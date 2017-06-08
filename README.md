@@ -45,7 +45,7 @@ An example of the response model is as follows:
 }
 ```
 
-If you do **not** want to use the response model (reccomended, as the response model is our legacy model) add following config when adding Mvc support in ConfigureServices
+If you do **not** want to use the response model (recommended, as the response model is our legacy model) add following config when adding Mvc support in ConfigureServices
 
 ```C#
 services.AddMvc(
@@ -55,17 +55,17 @@ services.AddMvc(
     })
 );
 ```
-If you **do** want to use the response model (**not reccomended**), use `config.AddResponseFilters(true);`
+If you **do** want to use the response model (**not recommended**), use `config.AddResponseFilters(true);`
 
 #### 2.2 error model
-Certain Excepions automatically get mapped to certain actionresults
+Certain Exceptions automatically get mapped to certain actionresults
 * ValidationException => Validation error model with statuscode 400
 * EntityNotFoundException => If a message is set, a normal error model with statuscode 404, otherwise empty body with statuscode 404
 * UnauthorizedException => 401 statuscode
 * ForbiddenException => 403 statuscode
 * ExceptionWithFeedback => error model with statuscode 500. **Important** to note here is that these messages will always be shown, even when running in a production environment
 * any other exception => error model with statuscode 500. **Important** to note here is that the message on these exceptions will **only** be shown when running in a development environment. In anything else, a generic "please contact support" message will be shown
-##### 2.2.1 Reccomended error model
+##### 2.2.1 recommended error model
 An example of an error model:
 ```json
 {
@@ -138,6 +138,15 @@ If you want to use this error model, add following line to ConfigureServices
 ```C#
 services.AddResponseMiddleware(true);
 ```
+
+#### 2.3 Execution timing
+When using legacy mode (legacy response models) you don't need to do anything in this step (the Execution timing happens in an ActionFilter here).  
+When using non-legacy mode however, you need to register a middleware  
+In Startup.cs Configure, add following line
+```C#
+app.UseExecutionTiming();
+```
+This line has to be **above** `app.UseMvc();`
 
 # Helping out
 
