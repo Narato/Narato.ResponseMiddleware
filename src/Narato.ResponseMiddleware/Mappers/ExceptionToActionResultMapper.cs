@@ -26,7 +26,8 @@ namespace Narato.ResponseMiddleware.Mappers
             if (ex is IValidationException<object>)
             {
                 var typedEx = ex as IValidationException<object>;
-                var errorContent = new ValidationErrorContent<object>() { ValidationMessages = typedEx.ValidationMessages };
+                // null to bypass the typed constructor
+                var errorContent = new ValidationErrorContent<object>(null) { ValidationMessages = typedEx.ValidationMessages };
                 return new BadRequestObjectResult(errorContent);
             }
 

@@ -13,7 +13,8 @@ namespace Narato.ResponseMiddleware.ResponseFilters
             {
                 var modelValidationDictionary = GetModelValidationDictionary(context.ModelState);
 
-                context.Result = new BadRequestObjectResult(new ValidationErrorContent<string>() { ValidationMessages = modelValidationDictionary });
+                // null to bypass the typed constructor
+                context.Result = new BadRequestObjectResult(new ValidationErrorContent<string>(null) { ValidationMessages = modelValidationDictionary });
             }
         }
 

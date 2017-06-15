@@ -1,5 +1,5 @@
 ﻿{
-  "version": "1.0.8-*",
+  "version": "1.0.9-*",
   "title": "Narato.ResponseMiddleware",
   "description": "Contains middleware for error handling and correlation id's",
   "authors": [ "Narato - http://www.narato.be" ],
@@ -12,9 +12,9 @@
     },
     "Microsoft.AspNetCore.Mvc": "1.0.0",
     "NETStandard.Library": "1.6.0",
-    "Narato.ResponseMiddleware.Models": "1.0.0",
-    "Narato.ResponseMiddleware.Models.Legacy": "1.0.2",
-    "Narato.Correlations": "1.0.0"
+    "Narato.ResponseMiddleware.Models": "1.0.2",
+    "Narato.ResponseMiddleware.Models.Legacy": "1.0.4",
+    "Narato.Correlations": "1.0.1"
   },
 
   "frameworks": {

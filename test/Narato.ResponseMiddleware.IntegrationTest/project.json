@@ -12,7 +12,7 @@
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
     "xunit.runner.console": "2.2.0-beta1-build3239",
     "Microsoft.AspNetCore.TestHost": "1.0.0",
-    "Narato.ResponseMiddleware": "1.0.8",
+    "Narato.ResponseMiddleware": "1.0.9",
     "Narato.StringExtensions": "1.0.1"
   },
   "frameworks": {
