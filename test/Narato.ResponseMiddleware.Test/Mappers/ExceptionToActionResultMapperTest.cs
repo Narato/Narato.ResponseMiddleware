@@ -1,11 +1,15 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Narato.ResponseMiddleware.Mappers;
+using Narato.ResponseMiddleware.Mappers.Interfaces;
 using Narato.ResponseMiddleware.Models.ActionResults;
 using Narato.ResponseMiddleware.Models.Exceptions;
 using Narato.ResponseMiddleware.Models.Models;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
@@ -19,7 +23,8 @@ namespace Narato.ResponseMiddleware.Test.Mappers
             // Arrange
             var hostingEnvironmentMock = new Mock<IHostingEnvironment>();
             var loggerMock = new Mock<ILogger<ExceptionToActionResultMapper>>();
-            var mapper = new ExceptionToActionResultMapper(hostingEnvironmentMock.Object, loggerMock.Object);
+            var hooks = new List<IExceptionToActionResultMapperHook>();
+            var mapper = new ExceptionToActionResultMapper(hooks, hostingEnvironmentMock.Object, loggerMock.Object);
 
             var validationDictionary = new ModelValidationDictionary<string>();
             validationDictionary.Add("name", "cannot contain numbers.");
@@ -41,7 +46,8 @@ namespace Narato.ResponseMiddleware.Test.Mappers
             // Arrange
             var hostingEnvironmentMock = new Mock<IHostingEnvironment>();
             var loggerMock = new Mock<ILogger<ExceptionToActionResultMapper>>();
-            var mapper = new ExceptionToActionResultMapper(hostingEnvironmentMock.Object, loggerMock.Object);
+            var hooks = new List<IExceptionToActionResultMapperHook>();
+            var mapper = new ExceptionToActionResultMapper(hooks, hostingEnvironmentMock.Object, loggerMock.Object);
 
             var ex = new EntityNotFoundException();
 
@@ -58,7 +64,8 @@ namespace Narato.ResponseMiddleware.Test.Mappers
             // Arrange
             var hostingEnvironmentMock = new Mock<IHostingEnvironment>();
             var loggerMock = new Mock<ILogger<ExceptionToActionResultMapper>>();
-            var mapper = new ExceptionToActionResultMapper(hostingEnvironmentMock.Object, loggerMock.Object);
+            var hooks = new List<IExceptionToActionResultMapperHook>();
+            var mapper = new ExceptionToActionResultMapper(hooks, hostingEnvironmentMock.Object, loggerMock.Object);
 
             var ex = new EntityNotFoundException("meep", "moop");
 
@@ -78,7 +85,8 @@ namespace Narato.ResponseMiddleware.Test.Mappers
             // Arrange
             var hostingEnvironmentMock = new Mock<IHostingEnvironment>();
             var loggerMock = new Mock<ILogger<ExceptionToActionResultMapper>>();
-            var mapper = new ExceptionToActionResultMapper(hostingEnvironmentMock.Object, loggerMock.Object);
+            var hooks = new List<IExceptionToActionResultMapperHook>();
+            var mapper = new ExceptionToActionResultMapper(hooks, hostingEnvironmentMock.Object, loggerMock.Object);
 
             var ex = new UnauthorizedException();
 
@@ -95,7 +103,8 @@ namespace Narato.ResponseMiddleware.Test.Mappers
             // Arrange
             var hostingEnvironmentMock = new Mock<IHostingEnvironment>();
             var loggerMock = new Mock<ILogger<ExceptionToActionResultMapper>>();
-            var mapper = new ExceptionToActionResultMapper(hostingEnvironmentMock.Object, loggerMock.Object);
+            var hooks = new List<IExceptionToActionResultMapperHook>();
+            var mapper = new ExceptionToActionResultMapper(hooks, hostingEnvironmentMock.Object, loggerMock.Object);
 
             var ex = new ForbiddenException();
 
@@ -112,7 +121,8 @@ namespace Narato.ResponseMiddleware.Test.Mappers
             // Arrange
             var hostingEnvironmentMock = new Mock<IHostingEnvironment>();
             var loggerMock = new Mock<ILogger<ExceptionToActionResultMapper>>();
-            var mapper = new ExceptionToActionResultMapper(hostingEnvironmentMock.Object, loggerMock.Object);
+            var hooks = new List<IExceptionToActionResultMapperHook>();
+            var mapper = new ExceptionToActionResultMapper(hooks, hostingEnvironmentMock.Object, loggerMock.Object);
 
             var ex = new ExceptionWithFeedback("meep", "moop");
 
@@ -166,5 +176,31 @@ namespace Narato.ResponseMiddleware.Test.Mappers
         //    var internalServerObjectResult = actionResult as InternalServerObjectResult;
         //    Assert.Equal("Something went wrong. Contact support and give them the identifier found below.", ((ErrorContent)internalServerObjectResult.Value).Message);
         //}
+
+        [Fact]
+        public void TestMappingHook()
+        {
+            // Arrange
+            var hostingEnvironmentMock = new Mock<IHostingEnvironment>();
+            var loggerMock = new Mock<ILogger<ExceptionToActionResultMapper>>();
+            var hookMock = new Mock<IExceptionToActionResultMapperHook>();
+            var returnActionResult = new ObjectResult("meep");
+            returnActionResult.StatusCode = StatusCodes.Status409Conflict;
+            hookMock.Setup(hm => hm.Map(It.IsAny<Exception>())).Returns(returnActionResult);
+
+            var hooks = new List<IExceptionToActionResultMapperHook>();
+            hooks.Add(hookMock.Object);
+
+            var mapper = new ExceptionToActionResultMapper(hooks, hostingEnvironmentMock.Object, loggerMock.Object);
+
+            var ex = new ExceptionWithFeedback("meep", "moop");
+
+            // Act
+            var actionResult = mapper.Map(ex);
+
+            // Assert
+            Assert.IsType(typeof(ObjectResult), actionResult);
+            Assert.Equal(StatusCodes.Status409Conflict, ((ObjectResult)actionResult).StatusCode);
+        }
     }
 }

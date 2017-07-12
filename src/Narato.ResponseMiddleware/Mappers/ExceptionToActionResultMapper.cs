@@ -7,22 +7,32 @@ using Narato.ResponseMiddleware.Models.Exceptions;
 using Narato.ResponseMiddleware.Models.ActionResults;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 
 namespace Narato.ResponseMiddleware.Mappers
 {
     public class ExceptionToActionResultMapper : IExceptionToActionResultMapper
     {
+        private readonly IEnumerable<IExceptionToActionResultMapperHook> _mapperHooks;
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly ILogger _logger;
 
-        public ExceptionToActionResultMapper(IHostingEnvironment hostingEnvironment, ILogger<ExceptionToActionResultMapper> logger)
+        public ExceptionToActionResultMapper(IEnumerable<IExceptionToActionResultMapperHook> mapperHooks, IHostingEnvironment hostingEnvironment, ILogger<ExceptionToActionResultMapper> logger)
         {
+            _mapperHooks = mapperHooks;
             _hostingEnvironment = hostingEnvironment;
             _logger = logger;
         }
 
         public virtual IActionResult Map(Exception ex)
         {
+            foreach (var hook in _mapperHooks)
+            {
+                var result = hook.Map(ex);
+                if (result != null)
+                    return result;
+            }
+
             if (ex is IValidationException<object>)
             {
                 var typedEx = ex as IValidationException<object>;

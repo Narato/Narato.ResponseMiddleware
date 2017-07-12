@@ -11,18 +11,21 @@ using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using Narato.ResponseMiddleware.Models.ActionResults;
+using System.Collections.Generic;
 
 namespace Narato.ResponseMiddleware.Mappers
 {
     public class LegacyExceptionToActionResultMapper : IExceptionToActionResultMapper
     {
+        private readonly IEnumerable<IExceptionToActionResultMapperHook> _mapperHooks;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ICorrelationIdProvider _correlationIdProvider;
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly ILogger _logger;
 
-        public LegacyExceptionToActionResultMapper(IHttpContextAccessor httpContextAccessor, ICorrelationIdProvider correlationIdProvider, IHostingEnvironment hostingEnvironment, ILogger<LegacyExceptionToActionResultMapper> logger)
+        public LegacyExceptionToActionResultMapper(IEnumerable<IExceptionToActionResultMapperHook> mapperHooks, IHttpContextAccessor httpContextAccessor, ICorrelationIdProvider correlationIdProvider, IHostingEnvironment hostingEnvironment, ILogger<LegacyExceptionToActionResultMapper> logger)
         {
+            _mapperHooks = mapperHooks;
             _httpContextAccessor = httpContextAccessor;
             _correlationIdProvider = correlationIdProvider;
             _hostingEnvironment = hostingEnvironment;
@@ -33,8 +36,14 @@ namespace Narato.ResponseMiddleware.Mappers
         // first check if it is your IValidationException, and then call base.Map(ex)
         public virtual IActionResult Map(Exception ex)
         {
-            var absolutePath = _httpContextAccessor.HttpContext.Request.Path;
+            foreach (var hook in _mapperHooks)
+            {
+                var result = hook.Map(ex);
+                if (result != null)
+                    return result;
+            }
 
+            var absolutePath = _httpContextAccessor.HttpContext.Request.Path;
             if (ex is IValidationException<string>)
             {
                 var typedEx = ex as IValidationException<string>;

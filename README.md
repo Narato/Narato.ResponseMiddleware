@@ -65,6 +65,8 @@ Certain Exceptions automatically get mapped to certain actionresults
 * ForbiddenException => 403 statuscode
 * ExceptionWithFeedback => error model with statuscode 500. **Important** to note here is that these messages will always be shown, even when running in a production environment
 * any other exception => error model with statuscode 500. **Important** to note here is that the message on these exceptions will **only** be shown when running in a development environment. In anything else, a generic "please contact support" message will be shown
+
+These mappings can be extended/replaced. see section [2.2.3](#223-exception-mapping-hooks) for more info
 ##### 2.2.1 recommended error model
 An example of an error model:
 ```json
@@ -138,6 +140,12 @@ If you want to use this error model, add following line to ConfigureServices
 ```C#
 services.AddResponseMiddleware(true);
 ```
+
+##### 2.2.3 Exception mapping hooks
+If the default Exception to ActionResult mappings aren't good enough, you have 2 options.  
+Either extend `ExceptionToActionResultMapper` (or `LegacyExceptionToActionResultMapper`) and override the `Map(Exception ex)` method (make sure you call `base.Map(ex)` after your code).  
+Or create a (or several) new implementation of `IExceptionToActionResultMapperHook`. An example can be found [here](https://github.com/Narato/Narato.ResponseMiddleware/blob/master/test/Narato.ResponseMiddleware.IntegrationTest/Mappers/TestClasses/ConflictMapperHook.cs).
+Don't forget to add it in your Startup.cs!
 
 #### 2.3 Execution timing
 When using legacy mode (legacy response models) you don't need to do anything in this step (the Execution timing happens in an ActionFilter here).  
