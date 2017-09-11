@@ -35,7 +35,7 @@ namespace Narato.ResponseMiddleware.IntegrationTest.Mappers
                             config.AddResponseFilters();
                         });
 
-                    services.AddTransient<IExceptionToActionResultMapperHook, ConflictMapperHook> ();
+                    services.AddTransient<IExceptionToActionResultMapperHook, ConflictMapperHook>();
 
                     services.AddResponseMiddleware();
                 });

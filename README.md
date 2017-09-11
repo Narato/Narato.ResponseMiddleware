@@ -156,6 +156,10 @@ app.UseExecutionTiming();
 ```
 This line has to be **above** `app.UseMvc();`
 
+### 3. Custom Validation message model
+In most cases, you will use `IValidationException<string>`, but when you want a more complex model, you can always change the generic part to be any other model you want. Everything will work out of the box, except if you use the legacy response models.  
+In this case you have to make sure to add an Exception mapping hook for your custom model. e.g.: `IValidationException<MyCustomModel>`
+
 # Helping out
 
 If you want to help out, please read [this wiki page](https://github.com/Narato/Narato.ResponseMiddleware/wiki/Helping-out)
