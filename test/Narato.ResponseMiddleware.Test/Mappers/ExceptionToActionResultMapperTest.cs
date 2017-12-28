@@ -34,9 +34,9 @@ namespace Narato.ResponseMiddleware.Test.Mappers
             var actionResult = mapper.Map(ex);
 
             // Assert
-            Assert.IsType(typeof(BadRequestObjectResult), actionResult);
+            Assert.IsType<BadRequestObjectResult>(actionResult);
             var badRequestActionResult = actionResult as BadRequestObjectResult;
-            Assert.IsType(typeof(ValidationErrorContent<object>), badRequestActionResult.Value);
+            Assert.IsType<ValidationErrorContent<object>>(badRequestActionResult.Value);
             Assert.Equal("cannot contain numbers.", ((ValidationErrorContent<object>)badRequestActionResult.Value).ValidationMessages.Values.First().First());
         }
 
@@ -55,7 +55,7 @@ namespace Narato.ResponseMiddleware.Test.Mappers
             var actionResult = mapper.Map(ex);
 
             // Assert
-            Assert.IsType(typeof(NotFoundResult), actionResult);
+            Assert.IsType<NotFoundResult>(actionResult);
         }
 
         [Fact]
@@ -73,7 +73,7 @@ namespace Narato.ResponseMiddleware.Test.Mappers
             var actionResult = mapper.Map(ex);
 
             // Assert
-            Assert.IsType(typeof(NotFoundObjectResult), actionResult);
+            Assert.IsType<NotFoundObjectResult>(actionResult);
 
             var notfoundObjectResult = actionResult as NotFoundObjectResult;
             Assert.Equal("meep", ((ErrorContent)notfoundObjectResult.Value).Code);
@@ -94,7 +94,7 @@ namespace Narato.ResponseMiddleware.Test.Mappers
             var actionResult = mapper.Map(ex);
 
             // Assert
-            Assert.IsType(typeof(UnauthorizedResult), actionResult);
+            Assert.IsType<UnauthorizedResult>(actionResult);
         }
 
         [Fact]
@@ -112,7 +112,7 @@ namespace Narato.ResponseMiddleware.Test.Mappers
             var actionResult = mapper.Map(ex);
 
             // Assert
-            Assert.IsType(typeof(ForbidResult), actionResult);
+            Assert.IsType<ForbidResult>(actionResult);
         }
 
         [Fact]
@@ -130,7 +130,7 @@ namespace Narato.ResponseMiddleware.Test.Mappers
             var actionResult = mapper.Map(ex);
 
             // Assert
-            Assert.IsType(typeof(InternalServerObjectResult), actionResult);
+            Assert.IsType<InternalServerObjectResult>(actionResult);
 
             var internalServerObjectResult = actionResult as InternalServerObjectResult;
             Assert.Equal("meep", ((ErrorContent)internalServerObjectResult.Value).Code);
@@ -143,7 +143,9 @@ namespace Narato.ResponseMiddleware.Test.Mappers
         //    // Arrange
         //    var hostingEnvironmentMock = new Mock<IHostingEnvironment>();
         //    hostingEnvironmentMock.Setup(hem => hem.IsEnvironment()).Returns(true);
-        //    var mapper = new ExceptionToActionResultMapper(hostingEnvironmentMock.Object);
+        //    var hooks = new List<IExceptionToActionResultMapperHook>();
+        //    var loggerMock = new Mock<ILogger<ExceptionToActionResultMapper>>();
+        //    var mapper = new ExceptionToActionResultMapper(hooks, hostingEnvironmentMock.Object, loggerMock.Object);
 
         //    var ex = new Exception("meep");
 
@@ -199,7 +201,7 @@ namespace Narato.ResponseMiddleware.Test.Mappers
             var actionResult = mapper.Map(ex);
 
             // Assert
-            Assert.IsType(typeof(ObjectResult), actionResult);
+            Assert.IsType<ObjectResult>(actionResult);
             Assert.Equal(StatusCodes.Status409Conflict, ((ObjectResult)actionResult).StatusCode);
         }
     }

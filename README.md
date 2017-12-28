@@ -13,16 +13,10 @@ If you don't want to use our exceptions, or you want to extend the mapping, you 
 
 Getting started
 ==========
-### 1. Add dependency in project.json
+### 1. Add dependency in your project's csproj file
 
-```json
-"dependencies": {
-   "Narato.ResponseMiddleware": "1.0.8"
-}
-```
-or if using the new csproj files: 
 ```xml
-<PackageReference Include="Narato.ResponseMiddleware.Models" Version="1.0.8" />
+<PackageReference Include="Narato.ResponseMiddleware.Models" Version="2.0.0" />
 ```
 
 ### 2. Configure Startup.cs

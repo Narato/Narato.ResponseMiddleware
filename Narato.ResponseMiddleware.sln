@@ -1,17 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BDFB9B27-E3EE-40C6-9897-56FCBD81AFE5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{85A899C5-F021-4502-9DA8-5C4AF6CE35CB}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Narato.ResponseMiddleware", "src\Narato.ResponseMiddleware\Narato.ResponseMiddleware.xproj", "{6F5B9E55-FAC5-448F-A2B9-B58EF516212D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Narato.ResponseMiddleware", "src\Narato.ResponseMiddleware\Narato.ResponseMiddleware.csproj", "{6F5B9E55-FAC5-448F-A2B9-B58EF516212D}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Narato.ResponseMiddleware.Test", "test\Narato.ResponseMiddleware.Test\Narato.ResponseMiddleware.Test.xproj", "{F38CAF26-E6D7-411D-9D51-5CEFF645DC86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Narato.ResponseMiddleware.Test", "test\Narato.ResponseMiddleware.Test\Narato.ResponseMiddleware.Test.csproj", "{F38CAF26-E6D7-411D-9D51-5CEFF645DC86}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Narato.ResponseMiddleware.IntegrationTest", "test\Narato.ResponseMiddleware.IntegrationTest\Narato.ResponseMiddleware.IntegrationTest.xproj", "{9D307BBF-C367-4003-A8DF-C093B8734E94}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Narato.ResponseMiddleware.IntegrationTest", "test\Narato.ResponseMiddleware.IntegrationTest\Narato.ResponseMiddleware.IntegrationTest.csproj", "{9D307BBF-C367-4003-A8DF-C093B8734E94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,5 +39,8 @@ Global
 		{6F5B9E55-FAC5-448F-A2B9-B58EF516212D} = {BDFB9B27-E3EE-40C6-9897-56FCBD81AFE5}
 		{F38CAF26-E6D7-411D-9D51-5CEFF645DC86} = {85A899C5-F021-4502-9DA8-5C4AF6CE35CB}
 		{9D307BBF-C367-4003-A8DF-C093B8734E94} = {85A899C5-F021-4502-9DA8-5C4AF6CE35CB}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DD63F1AB-0B47-4B16-9B83-2EBCEC00059D}
 	EndGlobalSection
 EndGlobal
