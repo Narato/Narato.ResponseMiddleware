@@ -4,7 +4,7 @@
     <Description>Contains middleware for error handling and correlation id's</Description>
     <AssemblyTitle>Narato.ResponseMiddleware</AssemblyTitle>
     <NeutralLanguage>en-us</NeutralLanguage>
-    <VersionPrefix>2.0.1</VersionPrefix>
+    <VersionPrefix>2.0.2</VersionPrefix>
     <Authors>Narato - http://www.narato.be</Authors>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>Narato.ResponseMiddleware</AssemblyName>

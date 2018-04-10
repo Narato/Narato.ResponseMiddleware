@@ -141,6 +141,20 @@ Either extend `ExceptionToActionResultMapper` (or `LegacyExceptionToActionResult
 Or create a (or several) new implementation of `IExceptionToActionResultMapperHook`. An example can be found [here](https://github.com/Narato/Narato.ResponseMiddleware/blob/master/test/Narato.ResponseMiddleware.IntegrationTest/Mappers/TestClasses/ConflictMapperHook.cs).
 Don't forget to add it in your Startup.cs!
 
+##### 2.2.4 Dealing with AggregateExceptions
+Sometimes Exceptions get wrapped in an AggregateException (for example when running async methods synchronously, or when using Service Fabric with remoting). In such cases you could write an extra [Exception mapping hook](#223-exception-mapping-hooks), or you could use the built-in AggregateExceptionUnwrappingFilter. This filter will unwrap the AggregateException (**only if there is only 1 inner exception**), so that the ExceptionToActionResultMapper can do its job as usual.  
+To use the Filter add following config when adding Mvc support in ConfigureServices
+
+```C#
+services.AddMvc(
+    config =>
+    {
+        config.AddResponseFilters();
+        config.AddAggregateExceptionUnwrappingFilter(); // make sure to add this line *BELOW* the AddResponseFilters line!
+    })
+);
+```
+
 #### 2.3 Execution timing
 When using legacy mode (legacy response models) you don't need to do anything in this step (the Execution timing happens in an ActionFilter here).  
 When using non-legacy mode however, you need to register a middleware  

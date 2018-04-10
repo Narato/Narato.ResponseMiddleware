@@ -43,5 +43,10 @@ namespace Narato.ResponseMiddleware
             }
             config.Filters.Add(typeof(ExceptionHandlerFilter));
         }
+
+        public static void AddAggregateExceptionUnwrappingFilter(this MvcOptions config)
+        {
+            config.Filters.Add(typeof(AggregateExceptionUnwrappingFilter));
+        }
     }
 }
