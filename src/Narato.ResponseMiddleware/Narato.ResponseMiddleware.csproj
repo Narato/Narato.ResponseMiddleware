@@ -4,7 +4,7 @@
     <Description>Contains middleware for error handling and correlation id's</Description>
     <AssemblyTitle>Narato.ResponseMiddleware</AssemblyTitle>
     <NeutralLanguage>en-us</NeutralLanguage>
-    <VersionPrefix>2.0.2</VersionPrefix>
+    <VersionPrefix>2.0.3</VersionPrefix>
     <Authors>Narato - http://www.narato.be</Authors>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>Narato.ResponseMiddleware</AssemblyName>
@@ -20,9 +20,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0" />
-    <PackageReference Include="Narato.ResponseMiddleware.Models" Version="2.0.1" />
-    <PackageReference Include="Narato.ResponseMiddleware.Models.Legacy" Version="2.0.0" />
+    <PackageReference Include="Narato.ResponseMiddleware.Models" Version="2.0.4" />
+    <PackageReference Include="Narato.ResponseMiddleware.Models.Legacy" Version="2.0.2" />
     <PackageReference Include="Narato.Correlations" Version="2.0.0" />
+    <PackageReference Include="Narato.ResponseMiddleware.Models.Mvc" Version="2.0.0" />
   </ItemGroup>
 
 </Project>

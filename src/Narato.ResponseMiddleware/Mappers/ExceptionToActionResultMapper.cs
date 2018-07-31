@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Narato.ResponseMiddleware.Models.Exceptions.Interfaces;
 using Narato.ResponseMiddleware.Models.Models;
 using Narato.ResponseMiddleware.Models.Exceptions;
-using Narato.ResponseMiddleware.Models.ActionResults;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using Narato.ResponseMiddleware.Models.Mvc.ActionResults;
 
 namespace Narato.ResponseMiddleware.Mappers
 {
